@@ -56,6 +56,7 @@ type HoldingRow = {
   title: string;
   cusip: string;
   value: number;
+  prevValue: number;
   shares: number;
   prevShares: number;
   pct: number | null;
