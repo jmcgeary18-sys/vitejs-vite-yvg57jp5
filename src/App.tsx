@@ -83,7 +83,7 @@ type FundResult = {
 };
 
 async function fetchDashboard(signal: AbortSignal) {
-  const response = await fetch('/api/dashboard', { signal });
+  const response = await fetch('https://one3f-backend.onrender.com/api/dashboard', { signal });
   const body = await response.json();
   if (!response.ok) throw new Error(body.error || `HTTP ${response.status}`);
   return body as { checkedAt: string; funds: FundResult[] };
