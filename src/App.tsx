@@ -118,6 +118,17 @@ function Stat({ label, value, sub }: { label: string; value: string; sub?: strin
 function FundCard({ fundResult }: { fundResult: FundResult }) {
   const { fund, error } = fundResult;
   const rows = fundResult.rows || [];
+  const [filter, setFilter] = useState<'ALL' | keyof typeof STATUS>('ALL');
+
+  const counts = rows.reduce(
+    (acc, row) => {
+      acc[row.status] = (acc[row.status] || 0) + 1;
+      return acc;
+    },
+    { NEW: 0, EXIT: 0, ADD: 0, TRIM: 0, FLAT: 0 } as Record<keyof typeof STATUS, number>,
+  );
+
+  const visibleRows = filter === 'ALL' ? rows : rows.filter((row) => row.status === filter);
 
   return (
     <section className="fund-card">
@@ -153,36 +164,73 @@ function FundCard({ fundResult }: { fundResult: FundResult }) {
             />
           </div>
 
+          <div className="change-summary">
+            {(['NEW', 'EXIT', 'ADD', 'TRIM', 'FLAT'] as const).map((status) => (
+              <button
+                key={status}
+                className={`summary-tile summary-${status.toLowerCase()} ${
+                  filter === status ? 'active' : ''
+                }`}
+                onClick={() => setFilter(status)}
+              >
+                <span>{STATUS[status].label}</span>
+                <strong>{counts[status]}</strong>
+              </button>
+            ))}
+          </div>
+
+          <div className="filter-bar">
+            <button className={filter === 'ALL' ? 'active' : ''} onClick={() => setFilter('ALL')}>
+              All positions
+            </button>
+            <button className={filter === 'NEW' ? 'active' : ''} onClick={() => setFilter('NEW')}>
+              New only
+            </button>
+            <button className={filter === 'EXIT' ? 'active' : ''} onClick={() => setFilter('EXIT')}>
+              Exits only
+            </button>
+            <button className={filter === 'ADD' ? 'active' : ''} onClick={() => setFilter('ADD')}>
+              Adds only
+            </button>
+            <button className={filter === 'TRIM' ? 'active' : ''} onClick={() => setFilter('TRIM')}>
+              Trims only
+            </button>
+          </div>
+
           <div className="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>Issuer</th>
-                  <th>Class</th>
-                  <th>CUSIP</th>
-                  <th>Value</th>
-                  <th>Shares</th>
-                  <th>Prev</th>
-                  <th>Chg</th>
-                  <th>Status</th>
+                <th>Issuer</th>
+<th>Status</th>
+<th>Current Value</th>
+<th>Previous Value</th>
+<th>Current Shares</th>
+<th>Previous Shares</th>
+<th>Share Change</th>
+
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row, index) => (
-                  <tr key={`${row.cusip}-${row.putCall || 'common'}-${index}`}>
+                {visibleRows.map((row, index) => (
+                  <tr
+                    className={`row-${row.status.toLowerCase()}`}
+                    key={`${row.cusip}-${row.putCall || 'common'}-${index}`}
+                  >
                     <td className="issuer">
                       {row.name}
                       {row.putCall ? <span className="option-tag">{row.putCall}</span> : null}
                     </td>
-                    <td>{row.title || '-'}</td>
-                    <td>{row.cusip}</td>
-                    <td>{row.value ? fmtVal(row.value) : '-'}</td>
-                    <td>{row.shares ? fmtShares(row.shares) : '-'}</td>
-                    <td>{row.prevShares ? fmtShares(row.prevShares) : '-'}</td>
-                    <td>{fmtPct(row.pct)}</td>
                     <td>
-                      <Badge status={row.status} />
-                    </td>
+                      
+  <Badge status={row.status} />
+</td>
+<td>{row.value ? fmtVal(row.value) : '-'}</td>
+<td>{row.prevValue ? fmtVal(row.prevValue) : '-'}</td>
+<td>{row.shares ? fmtShares(row.shares) : '-'}</td>
+<td>{row.prevShares ? fmtShares(row.prevShares) : '-'}</td>
+<td>{fmtPct(row.pct)}</td>
+
                   </tr>
                 ))}
               </tbody>
@@ -193,6 +241,7 @@ function FundCard({ fundResult }: { fundResult: FundResult }) {
     </section>
   );
 }
+
 
 export default function App() {
   const [state, setState] = useState<{
