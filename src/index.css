@@ -185,7 +185,7 @@ table,
 table {
   border-collapse: collapse;
   font-size: 12px;
-  min-width: 820px;
+  min-width: 680px;
   width: 100%;
 }
 
@@ -288,4 +288,132 @@ td:first-child {
   .stats {
     grid-template-columns: 1fr;
   }
+}
+.change-summary {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(5, minmax(72px, 1fr));
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid #e5eaf0;
+}
+
+.summary-tile {
+  border: 1px solid #cbd5df;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 46px;
+  padding: 8px 10px;
+  background: #fff;
+  color: #24313f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.summary-tile span {
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.summary-tile strong {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.summary-tile.active {
+  outline: 2px solid #1f2933;
+  outline-offset: 1px;
+}
+
+.summary-new {
+  background: #e8f5dc;
+  border-color: #78a957;
+}
+
+.summary-exit {
+  background: #fdecec;
+  border-color: #d46b6b;
+}
+
+.summary-add {
+  background: #ddf3ec;
+  border-color: #61aa98;
+}
+
+.summary-trim {
+  background: #faece7;
+  border-color: #cb7a58;
+}
+
+.summary-flat {
+  background: #f1efe8;
+  border-color: #aaa79d;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 16px 12px;
+  border-bottom: 1px solid #e5eaf0;
+}
+
+.filter-bar button {
+  background: #fff;
+  border: 1px solid #cbd5df;
+  border-radius: 6px;
+  color: #334155;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  min-height: 34px;
+  padding: 6px 10px;
+}
+
+.filter-bar button.active {
+  background: #1f2933;
+  border-color: #1f2933;
+  color: #fff;
+}
+
+.row-new {
+  background: #fbfff7;
+}
+
+.row-exit {
+  background: #fff8f8;
+}
+
+.row-add {
+  background: #f7fffc;
+}
+
+.row-trim {
+  background: #fffaf7;
+}
+
+.row-flat {
+  background: #fff;
+}
+
+.row-new td:first-child {
+  border-left: 4px solid #5d9237;
+}
+
+.row-exit td:first-child {
+  border-left: 4px solid #b84040;
+}
+
+.row-add td:first-child {
+  border-left: 4px solid #178259;
+}
+
+.row-trim td:first-child {
+  border-left: 4px solid #b85a2d;
+}
+
+.row-flat td:first-child {
+  border-left: 4px solid #cbd5df;
 }
