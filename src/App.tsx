@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const POLL_SEC = 60;
+const POLL_SEC = 15;
 
 const STATUS = {
   NEW: { label: 'NEW', bg: '#e8f5dc', color: '#244f09', border: '#3f7115' },
